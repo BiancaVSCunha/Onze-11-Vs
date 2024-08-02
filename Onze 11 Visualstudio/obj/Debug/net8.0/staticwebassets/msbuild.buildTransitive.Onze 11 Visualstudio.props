@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\Onze 11 Visualstudio.props" />
+</Project>

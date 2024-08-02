@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Onze 11 Visualstudio.props" />
+</Project>

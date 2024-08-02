@@ -1,0 +1,30 @@
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\Onze 11 Visualstudio.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\Onze 11 Visualstudio.AssemblyInfoInputs.cache
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\Onze 11 Visualstudio.AssemblyInfo.cs
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\Onze 11 Visualstudio.csproj.CoreCompileInputs.cache
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\Onze 11 Visualstudio.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\Onze 11 Visualstudio.RazorAssemblyInfo.cache
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\Onze 11 Visualstudio.RazorAssemblyInfo.cs
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\bin\Debug\net8.0\appsettings.json
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\bin\Debug\net8.0\Onze 11 Visualstudio.staticwebassets.runtime.json
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\bin\Debug\net8.0\Onze 11 Visualstudio.exe
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\bin\Debug\net8.0\Onze 11 Visualstudio.deps.json
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\bin\Debug\net8.0\Onze 11 Visualstudio.runtimeconfig.json
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\bin\Debug\net8.0\Onze 11 Visualstudio.dll
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\bin\Debug\net8.0\Onze 11 Visualstudio.pdb
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\staticwebassets\msbuild.Onze 11 Visualstudio.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\staticwebassets\msbuild.build.Onze 11 Visualstudio.props
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.Onze 11 Visualstudio.props
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.Onze 11 Visualstudio.props
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\scopedcss\bundle\Onze 11 Visualstudio.styles.css
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\scopedcss\projectbundle\Onze 11 Visualstudio.bundle.scp.css
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\Onze 11 Visualstudio.dll
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\refint\Onze 11 Visualstudio.dll
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\Onze 11 Visualstudio.pdb
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\Onze 11 Visualstudio.genruntimeconfig.cache
+C:\Users\Aluno Noite\Desktop\Bianca\Onze 11 Vs\Onze 11 Visualstudio\obj\Debug\net8.0\ref\Onze 11 Visualstudio.dll

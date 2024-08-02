@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Onze 11 Visualstudio/1.0.0": {
+        "runtime": {
+          "Onze 11 Visualstudio.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Onze 11 Visualstudio/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
