@@ -1,0 +1,267 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .box-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .box {
+            width: 250px;
+            height: 80px;
+            background-color: orange;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 5px;
+        }
+
+        .small-box {
+            width: 200px;
+            height: 40px;
+            background-color: #ffcc80;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #444;
+            border-radius: 5px;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        select {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        #chart-container {
+            width: 80%;
+            margin: auto;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho com 3 divs grandes e o select -->
+    <div class="dashboard-header">
+        <!-- Caixa para o total de usuários cadastrados -->
+        <div class="box-container">
+            <div class="box">Total de usuários cadastrados em 2025:</div>
+            <div class="small-box" id="totalUsuarios">Carregando...</div>
+        </div>
+
+        <!-- Caixa para o total de agendamentos -->
+        <div class="box-container">
+            <div class="box">Total de agendamentos feitos em 2025:</div>
+            <div class="small-box" id="totalAgendamentos">Carregando...</div>
+        </div>
+
+        <!-- Caixa para o lucro total -->
+        <div class="box-container">
+            <div class="box">Lucro total em 2025:</div>
+            <div class="small-box" id="lucroTotal">Carregando...</div>
+        </div>
+
+        <select id="anoSelect" onchange="mudarAno()">
+            <option value="2025">2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+        </select>
+    </div>
+
+    <!-- Divs para os gráficos -->
+    <div style="display: flex; justify-content: space-between;">
+        <div id="graficoAgendamentos" style="height: 400px; width: 400px;"></div>
+        <div id="graficoUsuarios" style="height: 400px; width: 400px;"></div>
+        <div id="graficoLucros" style="height: 400px; width: 400px;"></div>
+    </div>
+
+    <!-- Container do Gráfico -->
+    <div id="chart-container"></div>
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Highcharts.chart('chart-container', {
+                chart: { type: 'line' },
+                title: { text: 'Gráfico de Exemplo' },
+                xAxis: { categories: ['Jan', 'Fev', 'Mar', 'Abr'] },
+                series: [{
+                    name: 'Vendas',
+                    data: @Html.Raw(ViewBag.ChartData)
+                     }]
+            });
+        });
+
+        function mudarAno() {
+            var anoSelecionado = document.getElementById('anoSelect').value;  // Obtém o valor do ano selecionado
+
+            // Chama as funções passando o ano selecionado
+            contarAgendamentosPorAno(anoSelecionado);
+            contarUsuariosPorAno(anoSelecionado);
+            somarLucroPorAno(anoSelecionado);
+            carregarGraficoAgendamentos(anoSelecionado);
+            carregarGraficoUsuarios(anoSelecionado);
+            carregarGraficoLucros(anoSelecionado);
+        }
+
+        // Função para contar agendamentos por ano
+        function contarAgendamentosPorAno() {
+            var ano = $('#anoSelect').val();  // Obtém o valor do ano do input
+            $.ajax({
+                url: '/Dashboard/ContarAgendamentosPorAno',  // URL da action
+                type: 'GET',
+                data: { ano: ano },
+                success: function (data) {
+                    $('#totalAgendamentos').text('Total de Agendamentos: ' + data);  // Exibe o resultado na página
+                },
+                error: function (xhr, status, error) {
+                    console.error('Erro na chamada Ajax:', status, error);
+                }
+            });
+        }
+
+        // Função para contar usuários por ano
+        function contarUsuariosPorAno() {
+            var ano = $('#anoSelect').val();  // Obtém o valor do ano do input
+            $.ajax({
+                url: '/Dashboard/ContarUsuariosPorAno',  // URL da action
+                type: 'GET',
+                data: { ano: ano },
+                success: function (data) {
+                    $('#totalUsuarios').text('Total de Usuários: ' + data);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Erro na chamada Ajax:', status, error);
+                }
+            });
+        }
+
+        // Função para somar lucro por ano
+        function somarLucroPorAno() {
+            var ano = $('#anoSelect').val();  // Obtém o valor do ano do input
+            $.ajax({
+                url: '/Dashboard/SomarLucroPorAno',  // URL da action
+                type: 'GET',
+                data: { ano: ano },
+                success: function (data) {
+                    $('#lucroTotal').text('Lucro Total: ' + data);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Erro na chamada Ajax:', status, error);
+                }
+            });
+        }
+
+        // Função para carregar os dados e gerar o gráfico de agendamentos por mês
+        function carregarGraficoAgendamentos(ano) {
+            $.getJSON('@Url.Action("ContarAgendamentosPorMes", "Dashboard")', { ano: ano }, function (dados) {
+                Highcharts.chart('graficoAgendamentos', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Agendamentos por Mês'
+                    },
+                    xAxis: {
+                        categories: dados.categorias // Meses
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Total de Agendamentos'
+                        }
+                    },
+                    series: dados.series // Dados dos agendamentos
+                });
+            });
+        }
+
+        // Função para carregar os dados e gerar o gráfico de usuários cadastrados por mês
+        function carregarGraficoUsuarios(ano) {
+            $.getJSON('@Url.Action("ContarUsuariosPorMes", "Dashboard")', { ano: ano }, function (dados) {
+                Highcharts.chart('graficoUsuarios', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Usuários Cadastrados por Mês'
+                    },
+                    xAxis: {
+                        categories: dados.categorias // Meses
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Total de Usuários'
+                        }
+                    },
+                    series: dados.series // Dados dos usuários
+                });
+            });
+        }
+
+        // Função para carregar os dados e gerar o gráfico de lucros por mês
+        function carregarGraficoLucros(ano) {
+            $.getJSON('@Url.Action("SomarLucroPorMes", "Dashboard")', { ano: ano }, function (dados) {
+                Highcharts.chart('graficoLucros', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Lucro por Mês'
+                    },
+                    xAxis: {
+                        categories: dados.categorias // Meses
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Lucro (R$)'
+                        }
+                    },
+                    series: dados.series // Dados do lucro
+                });
+            });
+        }
+
+        // Carregar os gráficos quando a página carregar
+    </script>
+
+
+
+
+</body>
+</html>

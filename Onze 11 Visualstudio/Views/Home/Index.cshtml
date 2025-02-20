@@ -1,105 +1,12 @@
 ﻿
 <body>
 
-
     <!-------------------- Scroll-Top Area (Start) -------------------->
     <a href="#home" class="scroll-top">
         <i class="fas fa-angle-up"></i>
     </a>
     <!-------------------- Scroll-Top Area (End) -------------------->
-    <!-------------------- Header Area (Start) -------------------->
-    <header class="header">
-
-        <!-- Logo -->
-        <a class="logo" href="#home" style="display: flex; align-items: center; text-decoration: none;">
-            <img src="~/images/Home/Onze mini.png" alt="About-Image"
-                 style="width: 120px; height: 120px; margin-right: 10px;">
-            <h2 style="margin: 0; font-size: 24px;"></h2>
-        </a>
-        <!-- Logo End -->
-        <!-- Navbar -->
-        <nav class="navbar" style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
-            <span style="display: flex; align-items: center; margin-right: 20px;">
-                <i class="fas fa-home fa-lg" aria-hidden="true"></i>
-                <a href="#home" style="margin-left: 10px;">Inicio</a>
-            </span>
-
-            <span style="display: flex; align-items: center; margin-right: 20px;">
-                <i class="fas fa-info-circle fa-lg" aria-hidden="true"></i>
-                <a href="#about" style="margin-left: 10px;">Sobre</a>
-            </span>
-
-            <span style="display: flex; align-items: center; margin-right: 20px;">
-                <i class="fas fa-gavel fa-lg" aria-hidden="true"></i>
-                <a href="#service" style="margin-left: 10px;">Serviço</a>
-            </span>
-
-            <span style="display: flex; align-items: center; margin-right: 20px;">
-                <i class="fas fa-window-restore fa-lg" aria-hidden="true"></i>
-                <a href="#portfolio" style="margin-left: 10px;">Portfólio</a>
-            </span>
-
-            <span style="display: flex; align-items: center; margin-right: 20px;">
-                <i class="fa fa-users fa-lg" aria-hidden="true"></i>
-                <a href="#testimonial" style="margin-left: 10px;">Depoimentos</a>
-            </span>
-
-            <span style="display: flex; align-items: center; margin-right: 20px;">
-                <i class="fa fa-file fa-lg" aria-hidden="true"></i>
-                <a href="#blog" style="margin-left: 10px;">Noticias</a>
-            </span>
-
-            <span style="display: flex; align-items: center; margin-right: 20px;">
-                <i class="fa fa-phone-square fa-lg" aria-hidden="true"></i>
-                <a href="#contact" style="margin-left: 10px;">Contato</a>
-            </span>
-            <div class="dropdown" style="position: relative; display: inline-block;">
-                <span style="display: flex; align-items: center; margin-right: 20px;">
-                    <i class="fa fa-user" aria-hidden="true" style="color: chocolate;"></i>
-                    <a href="/Usuario/Login" style="margin-left: 10px;">Login</a>
-                </span>
-                <div class="dropdown-content"
-                     style="display: none; position: absolute; background-color: #EAE7DC; width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; padding: 8px; border-radius: 3%; border: #A65F3C solid 1px; box-shadow: 5px #A65F3C;">
-                    <a href="/Usuario/Index"
-                       style="padding: 7px; text-decoration: none; display: flex; align-items: center; margin: 5px;">
-                        <i class="fa fa-users" aria-hidden="true" style="margin-right: 8px;"></i>
-                        Usuarios
-                    </a>
-                    <a href="/Agendamento/Index"
-                       style="padding: 7px; text-decoration: none; display: flex; align-items: center; margin: 5px;">
-                        <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 8px;"></i>
-                        Agendamento Admin
-                    </a>
-                    <a href="/Agendamento/AgendamentoUser"
-                       style=" padding: 7px; text-decoration: none; display: flex; align-items: center; margin: 5px;">
-                        <i class="fa fa-calendar" aria-hidden="true" style="margin-right: 8px;"></i>
-                        Agendamento User
-                    </a>
-                    <a href="/Agendamento/CadastroAgendamento"
-                       style=" padding: 7px; text-decoration: none; display: flex; align-items: center; margin: 5px;">
-                        <i class="fa fa-file" aria-hidden="true" style="margin-right: 8px;"></i>
-                        Cadastro Agendamento
-                    </a>
-                    <a href="/Servico/Index"
-                       style=" padding: 7px; text-decoration: none; display: flex; align-items: center; margin: 5px;">
-                        <i class="fas fa-gavel fa-lg" aria-hidden="true" style="margin-right: 8px;"></i></i>
-                        Serviço
-                    </a>
-                    <a href="#logout"
-                       style=" padding: 7px; text-decoration: none; display: flex; align-items: center; margin: 5px;">
-                        <i class="fa fa-align-justify" aria-hidden="true" style="margin-right: 8px;"></i><b></b>
-                        Relatório
-                    </a>
-                </div>
-            </div>
-        </nav>
-
-
-        <!-- Menubar -->
-        <div class="fas fa-bars" id="menu-btn"></div>
-
-    </header>
-    <!-------------------- Header Area (End) -------------------->
+   
     <!-------------------- Home Area (Start) -------------------->
     <section class="home" id="home">
 
@@ -899,6 +806,7 @@
             e.preventDefault();
         });
     </script>
+
     <script>
         // Script to handle the dropdown functionality
         document.querySelector('.dropdown').addEventListener('mouseover', function () {

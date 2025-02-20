@@ -1,28 +1,51 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+﻿@model IEnumerable<Onze_11_Visualstudio.Models.ServicoVM>
 
-    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="~/lib/swiper/swiper-bundle.min.css" rel="stylesheet">
-    <link href="~/lib/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/index.css">
+@{
+    Layout = "~/Views/Shared/_LayoutGerenciamento.cshtml";
+}
 
+<style>
+    /* Estilo para o overlay (fundo escuro) */
+    #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Cor escura com transparência */
+        z-index: 9998; /* Colocar abaixo do loader */
+        display: none; /* Inicialmente escondido */
+    }
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    /* Estilo para o loader */
+    #loader {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 15px 30px;
+        background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro para o loader */
+        color: white;
+        border-radius: 5px;
+        font-size: 16px;
+        z-index: 9999; /* Colocar acima do overlay */
+        display: none; /* Inicialmente escondido */
+    }
+</style>
 
-</head>
 <body>
+
+    <!-- Overlay e Loader -->
+    <div id="overlay" style="display: none;"></div>
+    <div id="loader" style="display: none;">
+        <i class="fa fa-spinner fa-spin"></i> Carregando...
+    </div>
 
     <section class="maneger-page-section">
         <div class="container page-maneger">
 
             <div class="add-user-button">
-                <h1 class="section-title cliente-title-maneger">Gerenciamento de Serviço</h1>
+                <h1 class="section-title cliente-title-maneger" style="color:#F08AB7 !important">Gerenciamento de Serviço</h1>
                 <br />
             </div>
 
@@ -35,64 +58,76 @@
                     </div>
                     <div class="col-md-6 text-md-end">
                         <!-- Alteração para "text-md-end" para alinhar à direita apenas em telas médias e maiores -->
-                        <button class="btn btn-success btn-lg" onclick="" data-bs-toggle="modal" data-bs-target="#InserirUsuario" style="background-color: #F08AB7;">
+                        <button class="btn btn-success btn-lg" onclick="" data-bs-toggle="modal" data-bs-target="#InserirServico" style="background-color: #F08AB7; border-color:#F08AB7">
                             <i class="fa fa-plus"></i> Adicionar Serviço
                         </button>
                     </div>
                 </div>
             </div>
 
-            <div class="table-container table-responsive">
-                <table id="TbClientes" class="table">
-                    <colgroup>
-                        <col class="tc-nome">
-                    </colgroup>
-                    <thead>
+            <div style="max-height: 400px; overflow-y: auto; margin-top: 50px;">
+                <!-- Tabela com cabeçalho fixo -->
+                <table id="TbServicos" class="table" style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+                    <!-- Cabeçalho fixo -->
+                    <thead style="background-color: #F08AB7; color: white;">
                         <tr>
-                            <th>#</th>
-                            <th>Nome do serviço</th>
-                            <th>Valor do serviço</th>
-                            <th class="editar">Editar</th>
-                            <th class="excluir">Excluir</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; width: 50px; position: sticky; top: 0; background-color: #F08AB7">#</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; width: 220px; position: sticky; top: 0; background-color: #F08AB7;">Tipo de Serviço</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; width: 250px; position: sticky; top: 0; background-color: #F08AB7;">Valor</th>
+                            <th class="editar" style="border: 1px solid #ddd; padding: 8px; width: 80px; position: sticky; top: 0; background-color: #F08AB7;">Editar</th>
+                            <th class="excluir" style="border: 1px solid #ddd; padding: 8px; width: 80px; position: sticky; top: 0; background-color: #F08AB7;">Excluir</th>
                         </tr>
                     </thead>
-                    <tbody>
-
-                        <tr id="">
-                            <td>Id</td>
-                            <td>Serviço</td>
-                            <td>ValorServiço</td>
-                            <td>
-                                <button class="btn btn-default" onclick="" data-bs-toggle="modal" data-bs-target="#EditarUsuario">
-                                    <i class="fa fa-edit"></i>
-                                </button>
-                            </td>
-                            <td>
-                                <button class="btn btn-default" onclick="" data-bs-toggle="modal" data-bs-target="#ExcluirUsuario">
-                                    <i class="fa fa-trash text-danger"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
                 </table>
+
+                <!-- Corpo da tabela rolável -->
+                <div style="max-height: 300px; overflow-y: auto; overflow-x: hidden;">
+                    <table id="TbServicosBody" class="table" style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                @foreach (var servico in Model)
+                                {
+                                    <tr>
+                                        <td style="color: gray; border: 1px solid #ddd; padding: 8px; width: 50px">@servico.Id</td>
+                                        <td style="color: gray; border: 1px solid #ddd; padding: 8px; width: 220px">@servico.TipoServico</td>
+                                        <td style="color: gray; border: 1px solid #ddd; padding: 8px; width: 250px">@servico.Valor.ToString("C")</td> <!-- Formato de moeda -->
+
+                                        <td class="text-center" style="border: 1px solid #ddd; width: 80px;">
+                                            <button class="btn btn-default" onclick="definirEdt('@servico.Id', '@servico.TipoServico', '@servico.Valor')" data-bs-toggle="modal" data-bs-target="#EditarServico" style="color: black;">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-center" style="border: 1px solid #ddd; width: 80px;">
+                                            <button class="btn btn-default" onclick="definirExc('@servico.Id', '@servico.TipoServico', '@servico.Valor')" data-bs-toggle="modal" data-bs-target="#ExcluirServico" style="color: red;">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" style="text-align: center; color: #EAE7DC; padding: 8px;">Nenhum serviço encontrado.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
+
+
         </div>
 
-        <section class="container text-center">
-            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                <div>
-                    <button type="button" id="send-button2" class="nav-link active btn btn-danger btn-block" style="flex: 1; margin-left: 5px; background-color: #F08AB7 !important; " onclick="window.location.href = '/Home/Index';">
-                        Voltar
-                    </button>
-                </div>
-            </div>
-        </section>
+        
 
-        <div class="modal fade" id="EditarUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="EditarServico" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title" id="exampleModalLabel">Editar Serviço</h1>
+                        <h1 class="modal-title" id="exampleModalLabel" style="color:#F08AB7 !important">Editar Serviço</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -100,7 +135,10 @@
                             <p style="color:red">Campos com * vermelho são obrigatórios</p>
                             <div class="mb-3 row">
                                 <div class="col-md-6">
-                                    <input id="EditNome" type="text" class="form-control" placeholder="Digite o nome do Serviço">
+                                    @Html.DropDownList("EdtTipoServico",
+                                             new SelectList(ViewBag.Servicos, "Value", "Text", null),
+                                             "Escolha o serviço",
+                                             new { @class = "form-control", @style = "width:230px; background-color: #EAE7DC; color: #333;", required = "required" })
                                 </div>
                                 <div class="col-md-6">
                                     <label style="color:red">*</label>
@@ -109,7 +147,7 @@
 
                             <div class="mb-3 row">
                                 <div class="col-md-6">
-                                    <input id="EditSenha" type="text" class="form-control" placeholder="Digite o Valor do serviço">
+                                    <input id="EdtValor" type="text" class="form-control" placeholder="Digite o Valor do serviço">
                                 </div>
                                 <div class="col-md-6">
                                     <label style="color:red">*</label>
@@ -117,44 +155,44 @@
                             </div>
 
 
-                            <input type="hidden" id="IdEdt" value="" />
+                            <input type="hidden" id="EdtId" value="" />
 
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary" onclick=" AlterarUsuario()">Salvar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color:#F08AB7; border-color:#F08AB7">Fechar</button>
+                        <button type="button" class="btn btn-primary" onclick="  AlterarServico()" style="background-color:deeppink; border-color:deeppink">Salvar</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal fade" id="ExcluirUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="ExcluirServico" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title" id="exampleModalLabel">Excluir Serviço</h1>
+                        <h1 class="modal-title" id="exampleModalLabel" style="color:#F08AB7 !important">Excluir Serviço</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form>
                             <div class="mb-3">
                                 <label for="nome">Nome</label>
-                                <input type="text" id="ExcNome" class="form-control" placeholder="Digite o Serviço" readonly>
+                                <input type="text" id="ExcServico" class="form-control" placeholder="Digite o Serviço" readonly>
 
                             </div>
                             <div class="mb-3">
                                 <label for="email">Email</label>
-                                <input type="email" id="ExcEmail" class="form-control" placeholder="Digite Valor do Serviço" readonly>
+                                <input type="email" id="ExcValor" class="form-control" placeholder="Digite Valor do Serviço" readonly>
 
 
                             </div>
-                            <input type="hidden" id="IdExc" class="form-control" placeholder="Digite seu nome..." readonly>
+                            <input type="hidden" id="ExcId" class="form-control" placeholder="Digite seu nome..." readonly>
 
                         </form>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                            <button type="button" onclick="ExcluirUsuario()" class="btn btn-primary">Excluir</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color:#F08AB7; border-color:#F08AB7">Fechar</button>
+                            <button type="button" onclick="ExcluirServico()" class="btn btn-primary" style="background-color:deeppink; border-color:deeppink">Excluir</button>
                         </div>
 
                     </div>
@@ -163,12 +201,12 @@
             </div>
         </div>
 
-        <div class="modal fade" id="InserirUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="InserirServico" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h1 class="modal-title" id="exampleModalLabel">Adicionar Serviço</h1>
+                        <h1 class="modal-title" id="exampleModalLabel" style="color:#F08AB7 !important">Adicionar Serviço</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
@@ -177,7 +215,10 @@
                             <p style="color:red">Campos com * vermelho são obrigatórios</p>
                             <div class="mb-3 row">
                                 <div class="col-md-6">
-                                    <input id="Nome" type="text" class="form-control" placeholder="Digite o serviço">
+                                    @Html.DropDownList("TipoServico",
+                                             new SelectList(ViewBag.Servicos, "Value", "Text", null),
+                                             "Escolha o serviço",
+                                             new { @class = "form-control", @style = "width:230px; background-color: #EAE7DC; color: #333;", required = "required" })
                                 </div>
                                 <div class="col-md-6">
                                     <label style="color:red">*</label>
@@ -186,7 +227,7 @@
 
                             <div class="mb-3 row">
                                 <div class="col-md-6">
-                                    <input id="Senha" type="text" class="form-control" placeholder="Digite o valor do serviço">
+                                    <input id="Valor" type="text" class="form-control" placeholder="Digite o valor do serviço">
                                 </div>
                                 <div class="col-md-6">
                                     <label style="color:red">*</label>
@@ -198,222 +239,331 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary" onclick="InserirUsuario()">Adicionar</button><!--onclick para chamar a funcao de alteração-->
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color:#F08AB7; border-color:#F08AB7">Fechar</button>
+                        <button type="button" class="btn btn-primary" onclick="AdicionarServico()" style="background-color:deeppink; border-color:deeppink">Adicionar</button><!--onclick para chamar a funcao de alteração-->
                     </div>
                 </div>
             </div>
         </div>
-
-
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-        <script src="~/lib/swiper/swiper-bundle.min.js"></script>
-
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+       
         <script>
 
-            function definirEdt(id, Nome, Email, Senha, TipoUsuario, Telefone) {
-
-                $('#IdEdt').val(id);
-                $('#EditNome').val(Nome);
-                $('#EditSenha').val(Senha);
-                $('#EditEmail').val(Email);
-                $('#EditTel').val(Telefone);
-
-
-                var senhaValue = "";
-                if (Senha) {
-                    $('#EditSenha').val(Senha);
-                    senhaValue = Senha;
+            document.addEventListener("DOMContentLoaded", function () {
+                // Função para verificar se o campo foi preenchido e esconder o asterisco
+                function verificarPreenchimento(campo, label) {
+                    // Verifica se o campo está preenchido (para input) ou se o select não tem o valor padrão
+                    if (campo.value.trim() !== "" || (campo.tagName === "SELECT" && campo.selectedIndex !== 0)) {
+                        label.style.display = 'none'; // Esconde o asterisco
+                    } else {
+                        label.style.display = 'inline'; // Exibe o asterisco se o campo estiver vazio
+                    }
                 }
 
+                // Função para adicionar os eventos de input e change nos campos
+                function adicionarEventos() {
+                    // Campos a serem monitorados
+                    const campos = [
+                        { id: '#TipoServico', type: 'select' },  // Campo select
+                        { id: '#Valor', type: 'input' }         // Campo input
+                    ];
 
-                if ($('#DropTipoUsuarioEdit').length > 0) {
-                    $('#DropTipoUsuarioEdit option').filter(function () {
-                        return $(this).val() === TipoUsuario;
-                    }).prop('selected', true);
-                    $('#DropTipoUsuarioEdit').trigger('chosen:updated');
+                    campos.forEach(function (campoInfo) {
+                        const campo = document.querySelector(campoInfo.id);
+                        const label = campo.closest('.row').querySelector('label'); // Encontra o label associado ao campo
+
+                        if (campoInfo.type === 'input') {
+                            // Para campos de input, adicionar evento de 'input'
+                            campo.addEventListener('input', function () {
+                                verificarPreenchimento(campo, label);
+                            });
+                        } else if (campoInfo.type === 'select') {
+                            // Para o select, adicionar evento de 'change'
+                            campo.addEventListener('change', function () {
+                                verificarPreenchimento(campo, label);
+                            });
+                        }
+
+                        // Chama a função para inicializar o estado do campo ao carregar a página
+                        verificarPreenchimento(campo, label);
+                    });
+                }
+
+                // Inicializa os eventos
+                adicionarEventos();
+
+                // Função para limpar os campos do modal quando for aberto
+                window.limparCamposInserirServico = function () {
+                    // Limpar campos de texto
+                    document.querySelector('#Valor').value = '';
+                    document.querySelector('#TipoServico').selectedIndex = 0;  // Reseta o select para a opção "Escolha o tipo de Serviço"
+
+                    // Mostrar novamente os asteriscos
+                    const campos = [
+                        { id: '#TipoServico', type: 'select' },
+                        { id: '#Valor', type: 'input' }
+                    ];
+
+                    campos.forEach(function (campoInfo) {
+                        const campo = document.querySelector(campoInfo.id);
+                        const label = campo.closest('.row').querySelector('label');
+                        label.style.display = 'inline'; // Mostrar asterisco
+                    });
+                }
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                // Função para verificar se o campo foi preenchido e esconder o asterisco
+                function verificarPreenchimento(campo, label) {
+                    if (campo.value.trim() !== "" || (campo.tagName === "SELECT" && campo.selectedIndex !== 0)) {
+                        label.style.display = 'none'; // Esconde o asterisco
+                    } else {
+                        label.style.display = 'inline'; // Exibe o asterisco se o campo estiver vazio
+                    }
+                }
+
+                // Função para adicionar os eventos de input e change nos campos
+                function adicionarEventos() {
+                    // Campos a serem monitorados
+                    const campos = [
+                        { id: '#EdtTipoServico', type: 'select' },
+                        { id: '#EdtValor', type: 'input' }
+                    ];
+
+                    campos.forEach(function (campoInfo) {
+                        const campo = document.querySelector(campoInfo.id);
+                        const label = campo.closest('.row').querySelector('label'); // Encontra o label associado ao campo
+
+                        if (campoInfo.type === 'input') {
+                            // Para campos de input, adicionar evento de 'input'
+                            campo.addEventListener('input', function () {
+                                verificarPreenchimento(campo, label);
+                            });
+                        } else if (campoInfo.type === 'select') {
+                            // Para o select, adicionar evento de 'change'
+                            campo.addEventListener('change', function () {
+                                verificarPreenchimento(campo, label);
+                            });
+                        }
+
+                        // Chama a função para inicializar o estado do campo ao carregar a página
+                        verificarPreenchimento(campo, label);
+                    });
+                }
+
+                // Inicializa os eventos
+                adicionarEventos();
+
+                // Função que preenche os campos ao editar o serviço
+                window.definirEdt = function (id, tiposervico, valor) {
+                    // Preenche os campos do formulário com os valores recebidos
+                    $('#EdtId').val(id);
+                    $('#EdtValor').val(valor);
+
+                    // Atualiza o tipo de serviço no dropdown
+                    if ($('#EdtTipoServico').length > 0) {
+                        $('#EdtTipoServico option').filter(function () {
+                            return $(this).text() === tiposervico;  // Comparando o texto do tipo de serviço
+                        }).prop('selected', true);
+                        $('#EdtTipoServico').trigger('chosen:updated');
+                    } else {
+                        console.error("DropDownList 'EdtTipoServico' não encontrado.");
+                    }
+
+                    // Verifica o preenchimento dos campos e esconde os asteriscos
+                    const campos = [
+                        { id: '#EdtTipoServico', type: 'select' },
+                        { id: '#EdtValor', type: 'input' }
+                    ];
+
+                    // Chama a função de verificação para cada campo ao preencher os dados
+                    campos.forEach(function (campoInfo) {
+                        const campo = document.querySelector(campoInfo.id);
+                        const label = campo.closest('.row').querySelector('label');
+                        verificarPreenchimento(campo, label);
+                    });
+                }
+            });
+
+            function definirEdt(id, tiposervico, valor) {
+                console.log("tiposervico recebido:", tiposervico);  // Verifique o valor que está sendo passado para a função
+
+                $('#EdtId').val(id);
+                $('#EdtValor').val(valor);
+
+                if ($('#EdtTipoServico').length > 0) {
+                    console.log("Procurando valor no dropdown EdtTipoServico:", tiposervico);
+
+                    // Percorrer todas as opções para encontrar o valor correto
+                    var optionFound = false;
+
+                    $('#EdtTipoServico option').each(function () {
+                        // Comparar o texto das opções com o texto recebido
+                        if ($(this).text() === tiposervico) {
+                            // Marca a opção como selecionada
+                            $(this).prop('selected', true);
+                            optionFound = true;
+                        }
+                    });
+
+                    if (optionFound) {
+                        // Atualiza o chosen, se necessário
+                        $('#EdtTipoServico').trigger('chosen:updated');
+
+                        // Imprime no console o valor da opção selecionada
+                        var selectedValue = $('#EdtTipoServico').val();
+                        console.log("Valor selecionado no dropdown EdtTipoServico:", selectedValue);
+                    } else {
+                        console.log("Opção não encontrada no dropdown.");
+                    }
                 } else {
-                    console.error("DropDownList não encontrado.");
+                    console.error("DropDownList 'EdtTipoServico' não encontrado.");
                 }
             }
 
-            function definirExc(id, Nome, Email, Telefone) {
-                $('#IdExc').val(id);
-                $('#ExcNome').val(Nome);
-                $('#ExcEmail').val(Email);
-                $('#ExcTel').val(Telefone)
+            function definirExc(id, nome, valor) {
+                console.log(id, nome, valor)
+                $('#ExcId').val(id);
+                $('#ExcServico').val(nome);
+                $('#ExcValor').val(valor);
             }
 
-            function InserirUsuario() {
+            function ExcluirServico() {
+                var id = $('#ExcId').val();
 
-                var nome = $('#Nome').val();
-                var email = $('#Email').val();
-                var senha = $('#Senha').val();
-                var telefone = $('#Telefone').val();
-                var tipoUsuario = $('#DropTipoUsuario option:selected').val();
+                // Show the overlay and loader
+                $("#overlay").show();  // Exibir o overlay escuro
+                $("#loader").show();   // Exibir o loader
 
-                if (nome.trim() === "") {
-                    alert("Por favor, preencha o campo Nome.");
-                    return;
+                // Confirmar antes de excluir
+                if (confirm("Você tem certeza que deseja excluir este serviço?")) {
+                    // Fazer a requisição AJAX para excluir o serviço
+                    $.ajax({
+                        url: '/Servico/ExcluirServico',  // Substitua 'SeuController' pelo nome real do seu controller
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (response) {
+                            // Hide the overlay and loader after the response
+                            $("#overlay").hide();
+                            $("#loader").hide();
+                            // Verificar se a exclusão foi bem-sucedida
+                            if (response.success) {
+                                
+                                alert(response.message);  // Exibir mensagem de sucesso
+                                $('#ExcluirServico').modal('hide'); // Exemplo de fechamento de modal
+                                location.reload();  // Opcional: recarrega a página
+                            } else {
+                                alert(response.message);  // Caso haja erro
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            alert("Ocorreu um erro ao tentar excluir o serviço: " + error);
+                        }
+                    });
                 }
-                if (senha.trim() === "") {
-                    alert("Por favor, preencha o campo Senha.");
-                    return;
-                }
-                if (email.trim() === "") {
-                    alert("Por favor, insira um email válido.");
-                    return;
+            }
+
+            function AlterarServico() {
+                // Obter valores dos campos
+                var id = $('#EdtId').val();
+                var tipoServico = $('#EdtTipoServico option:selected').text();  // Valor do tipo de serviço selecionado
+                var valor = $('#EdtValor').val();  // Valor inserido
+
+                // Validação dos campos
+                if (!id || id === "") {
+                    alert("O ID do serviço é obrigatório.");
+                    return;  // Para a execução da função se o ID não estiver preenchido
                 }
 
-                if (tipoUsuario === "Escolha o Tipo de Usuário") {
+                if (!tipoServico || tipoServico === "Escolha o serviço") {
+                    alert("Por favor, selecione um tipo de serviço.");
+                    return;  // Para a execução da função se o tipo de serviço não for selecionado
+                }
+
+                if (!valor || valor.trim() === "") {
+                    alert("Por favor, insira um valor para o serviço.");
+                    return;  // Para a execução da função se o valor estiver vazio
+                }
+                // Show the overlay and loader
+                $("#overlay").show();  // Exibir o overlay escuro
+                $("#loader").show();   // Exibir o loader
+                // Fazer a requisição AJAX para atualizar o serviço
+                $.ajax({
+                    url: '/Servico/AtualizarServico',  // Substitua pelo nome real do seu controller
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        TipoServico: tipoServico,
+                        Valor: valor
+                    },
+                    success: function (response) {
+                        // Hide the overlay and loader after the response
+                        $("#overlay").hide();
+                        $("#loader").hide();
+                        // Verificar se a atualização foi bem-sucedida
+                        if (response.success) {
+                            alert("Serviço " + tipoServico + " alterado com sucesso!");
+                            $('#EditarServico').modal('hide');
+                            location.reload();  // Opcional: recarrega a página
+                        } else {
+                            alert(response.message);  // Caso haja erro na resposta
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Ocorreu um erro ao tentar atualizar o serviço: " + error);
+                    }
+                });
+            }
+
+            function AdicionarServico() {
+
+                var tipoServico = $('#TipoServico option:selected').text();
+                var Valor = $('#Valor').val();
+
+
+                if (tipoServico === "" || tipoServico === "Escolha o tipo de Usuário") {
                     alert("Por favor, selecione o tipo de usuário.");
                     return;
                 }
-
-                if (telefone.trim() === "") {
-                    alert("Por favor, insira um número de telefone válido.");
+                if (Valor.trim() === "") {
+                    alert("Por favor, insira um email válido.");
                     return;
                 }
-
-
-
+                // Show the overlay and loader
+                $("#overlay").show();  // Exibir o overlay escuro
+                $("#loader").show();   // Exibir o loader
+                // Objeto com os dados para enviar via AJAX
                 var dados = {
-                    Nome: nome,
-                    Email: email,
-                    Senha: senha,
-                    Telefone: telefone,
-                    TipoUsuario: tipoUsuario
+                    tipoServico: tipoServico,
+                    Valor: Valor
                 };
 
-                // Faça a chamada AJAX
+                console.log(dados); // Verifica os dados antes de enviar
+
+                // Requisição AJAX
                 $.ajax({
-                    url: '/Usuario/InserirUsuario',
-                    type: "POST",
-                    dataType: "json",
+                    url: '@Url.Action("InserirServico", "Servico")', // Substitua "NomeDoController" pelo nome da sua controller
+                    type: 'POST',
+                    dataType: 'json',
                     data: dados,
-                    success: function (resultado) {
-                        if (resultado.success) {
-                            alert(resultado.message);  // Exibe a mensagem de sucesso
-                            // Fecha o modal
-                            $('#InserirUsuario').modal('hide');
-                            // Recarrega a págInserirUsuarioina
-                            location.reload();
+                    success: function (response) {
+                        // Hide the overlay and loader after the response
+                        $("#overlay").hide();
+                        $("#loader").hide();
+                        // Exibe a mensagem de sucesso ou erro
+                        if (response.success) {
+                            alert(response.message);  // Exibe mensagem de sucesso
+                            // Se necessário, fecha o modal ou faz outra ação aqui
+                            $('#InserirServicoModal').modal('hide'); // Exemplo de fechamento de modal
+                            location.reload();  // Opcional: recarrega a página
                         } else {
-                            alert(resultado.message);  // Exibe a mensagem de falha
+                            alert(response.message);  // Exibe mensagem de erro
                         }
                     },
                     error: function () {
-                        alert('Erro na requisição AJAX.');
+                        alert('Erro ao processar a solicitação. Tente novamente.');
                     }
                 });
             }
-
-            function AlterarUsuario() {
-                var id = $("#IdEdt").val();
-                var nome = $("#EditNome").val();
-                var senha = $("#EditSenha").val();
-                var email = $("#EditEmail").val();
-                var tel = $('#EditTel').val();
-                var tipoCli = $('#DropTipoUsuarioEdit').val(); // Obtém o valor do tipo de cliente, não apenas o texto
-
-                // Validação do campo 'Nome'
-                if (!nome) {
-                    alert("Por favor, preencha o campo Nome.");
-                    return;
-                }
-
-                // Validação do campo 'Senha'
-                if (!senha) {
-                    alert("Por favor, preencha o campo Senha.");
-                    return;
-                }
-
-                // Validação do campo 'Email'
-                if (!email) {
-                    alert("Por favor, preencha o campo Email.");
-                    return;
-                }
-
-                // Validação do campo 'Telefone'
-                if (!tel) {
-                    alert("Por favor, preencha o campo Telefone.");
-                    return;
-                }
-
-                // Validação do campo 'Tipo de Cliente'
-                if (!tipoCli) {
-                    alert("Por favor, selecione o Tipo de Cliente.");
-                    return;
-                }
-
-                // Crie um objeto com os dados
-                var dados = {
-                    Id: id,
-                    Nome: nome,
-                    Senha: senha,
-                    Email: email,
-                    Telefone: tel,
-                    TipoUsuario: tipoCli
-                };
-
-                // Faça a chamada AJAX para o servidor
-                $.ajax({
-                    type: "POST",
-                    url: "/Usuario/AlterarUsuario",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(dados),
-                    success: function (response) {
-                        // Manipule a resposta do servidor
-                        if (response.success) {
-                            alert("Cliente alterado com sucesso!");
-                            // Feche o modal de edição se necessário
-                            $('#FormEditar').modal('hide');
-                            // Recarregue a página se necessário
-                            location.reload();
-                        } else {
-                            alert("Falha ao alterar cliente.");
-                        }
-                    },
-                    error: function (error) {
-                        // Manipule erros de requisição AJAX
-                        console.error("Erro na chamada AJAX:", error);
-                    }
-                });
-            }
-
-            function ExcluirUsuario() {
-                // Obtenha o ID do usuário a ser excluído
-                var userId = $('#IdExc').val();
-
-                // Faça uma requisição AJAX
-                $.ajax({
-                    type: "POST",
-                    url: "/Usuario/ExcluirUsuario", // Substitua "Usuario" pelo nome do seu controller
-                    data: { id: userId },
-                    dataType: "json",
-                    success: function (response) {
-                        // A resposta do servidor está em response.success
-                        if (response.success) {
-                            // Feche o modal de exclusão
-                            $('#ExcluirUsuario').modal('hide');
-                            alert("Cliente excluido com sucesso!");
-
-                            // Recarregue a página
-                            location.reload();
-                        } else {
-                            alert("Falha ao excluir usuário.");
-                        }
-                    },
-                    error: function () {
-                        alert("Erro na requisição AJAX.");
-                    }
-                });
-            }
-
 
 
         </script>

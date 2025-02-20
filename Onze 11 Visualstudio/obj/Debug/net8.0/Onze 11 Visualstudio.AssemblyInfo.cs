@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Onze 11 Visualstudio")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3876950c435bdc1cb90b92c7db00dd52298470fc")]
 [assembly: System.Reflection.AssemblyProductAttribute("Onze 11 Visualstudio")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Onze 11 Visualstudio")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
